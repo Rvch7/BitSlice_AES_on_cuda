@@ -130,12 +130,15 @@
     <ClCompile Include="aes_encrypt.cpp" />
     <ClCompile Include="aes_keyschedule.cpp" />
     <ClCompile Include="aes_keyschedule_lut.cpp" />
+    <ClCompile Include="key_expansion.cpp" />
     <ClCompile Include="sbox-test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aes.h" />
+    <ClInclude Include="AES128_main.h" />
     <ClInclude Include="cuint128_t.h" />
     <ClInclude Include="internal-aes.h" />
+    <ClInclude Include="key_expansion.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

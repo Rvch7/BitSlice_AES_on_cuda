@@ -5,16 +5,16 @@
 #include "aes.h"
 #include "internal-aes.h"
 #include "cuint128_t.h"
-
+//#include "key_expansion.h"
 
 typedef struct block {
     uint64_t high;
     uint64_t low;
-}block_t;
+}block128_t;
 
 //uint64_t out[7];
 
-block_t out[8];
+block128_t out[8];
 cuint128_t out128[8];
 
 
@@ -109,7 +109,7 @@ uint8_t aes_key0[16] = { 0 };
 
 
 
-__inline void load_64(const uint8_t* in, block_t* out) {
+__inline void load_64(const uint8_t* in, block128_t* out) {
     for (int i = 0; i < 8; i++) {
         out->high  |= ((uint64_t)in[i]) << (i * 8);
         out->low |= ((uint64_t)in[i + 8]) << (i * 8);
@@ -132,7 +132,7 @@ __inline void swapmove_(T& a, T& b, int n, T mask) {
     b ^= (tmp << n);
 }
 
-void bit_tranformation(block_t* block) {
+void bit_tranformation(block128_t* block) {
     swapmove_(block[0].high, block[1].high, 1, (uint64_t)0x5555555555555555); 
     swapmove_(block[0].low, block[1].low, 1, (uint64_t)0x5555555555555555);
     swapmove_(block[2].high, block[3].high, 1, (uint64_t)0x5555555555555555);
@@ -168,12 +168,12 @@ void bit_tranformation(block_t* block) {
 
 uint32_t rkeys;
 
-typedef unsigned short word;
+
 
 #define XOR(c,a,b) (c = (a)^(b))
 #define AND(c,a,b) (c = (a)&(b))
 
-void sbox_bitsliced(block_t in[8]) {
+void sbox_bitsliced(block128_t in[8]) {
     uint64_t U0, U1, U2, U3, U4, U5, U6, U7;
     uint64_t T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27;
     uint64_t M1, M2, M3, M4, M5, M6, M7, M8, M9, M10, M11, M12, M13, M14, M15, M16, M17, M18, M19, M20, M21, M22, M23, M24, M25, M26, M27, M28, M29, M30, M31, M32, M33, M34, M35, M36, M37, M38, M39, M40, M41, M42, M43, M44, M45, M46, M47, M48, M49, M50, M51, M52, M53, M54, M55, M56, M57, M58, M59, M60, M61, M62, M63;
@@ -330,12 +330,13 @@ void sbox_bitsliced(block_t in[8]) {
     in[6].high = ~S6;
     in[7].high = ~S7;
 }
-void sbox_bitsliced128(cuint128_t in[8]) {
-    cuint128_t U0, U1, U2, U3, U4, U5, U6, U7;
-    cuint128_t T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27;
-    cuint128_t M1, M2, M3, M4, M5, M6, M7, M8, M9, M10, M11, M12, M13, M14, M15, M16, M17, M18, M19, M20, M21, M22, M23, M24, M25, M26, M27, M28, M29, M30, M31, M32, M33, M34, M35, M36, M37, M38, M39, M40, M41, M42, M43, M44, M45, M46, M47, M48, M49, M50, M51, M52, M53, M54, M55, M56, M57, M58, M59, M60, M61, M62, M63;
-    cuint128_t L0, L1, L2, L3, L4, L5, L6, L7, L8, L9, L10, L11, L12, L13, L14, L15, L16, L17, L18, L19, L20, L21, L22, L23, L24, L25, L26, L27, L28, L29;
-    cuint128_t S0, S1, S2, S3, S4, S5, S6, S7;
+template <typename T>
+void sbox_bitsliced128(T in[8]) {
+    T U0, U1, U2, U3, U4, U5, U6, U7;
+    T T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27;
+    T M1, M2, M3, M4, M5, M6, M7, M8, M9, M10, M11, M12, M13, M14, M15, M16, M17, M18, M19, M20, M21, M22, M23, M24, M25, M26, M27, M28, M29, M30, M31, M32, M33, M34, M35, M36, M37, M38, M39, M40, M41, M42, M43, M44, M45, M46, M47, M48, M49, M50, M51, M52, M53, M54, M55, M56, M57, M58, M59, M60, M61, M62, M63;
+    T L0, L1, L2, L3, L4, L5, L6, L7, L8, L9, L10, L11, L12, L13, L14, L15, L16, L17, L18, L19, L20, L21, L22, L23, L24, L25, L26, L27, L28, L29;
+    T S0, S1, S2, S3, S4, S5, S6, S7;
 
     U0 = in[0];
     U1 = in[1];
@@ -490,6 +491,9 @@ void sbox_bitsliced128(cuint128_t in[8]) {
 
 
 
+//void mixCol();
+
+
 int main()
 {
     
@@ -513,7 +517,7 @@ int main()
         out128[i].lo = out[i].low;
     }
 
-    sbox_bitsliced(out);
+    //sbox_bitsliced(out);
     sbox_bitsliced128(out128);
 
     uint64_t a = 0x0011223344556677;
@@ -527,7 +531,10 @@ int main()
 
 
 
-
+    // TODO 
+    // - key expansion in bit slice
+    // - shift rows
+    // - mix cols
 
     //uint32_t ret = HI32(*out);
     //printf("%08x", ret);

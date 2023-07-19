@@ -14,7 +14,6 @@ public:
 	cuint128_t() {
 		hi = 0 ;
 		lo = 0 ;
-
 	}
 	cuint128_t(const uint64_t hi, const uint64_t lo)
 	: hi(hi), lo(lo) {
@@ -36,14 +35,14 @@ public:
 		return *this;
 	}
 
-	cuint128_t operator^(const cuint128_t rhs) {
+	cuint128_t& operator^(const cuint128_t rhs) {
 		cuint128_t out;
 		out.hi = this->hi ^ rhs.hi;
 		out.lo = this->lo ^ rhs.lo;
 		return out;
 	}
 
-	cuint128_t operator&(const cuint128_t rhs) {
+	cuint128_t& operator&(const cuint128_t rhs) {
 		cuint128_t out;
 		out.hi = this->hi & rhs.hi;
 		out.lo = this->lo & rhs.lo;
