@@ -35,5 +35,8 @@
     <ClInclude Include="internal-aes.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="cuint128_t.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 #include <iostream>
 #include "aes.h"
 #include "internal-aes.h"
+#include "cuint128_t.h"
 
 
 typedef struct block {
@@ -14,6 +15,7 @@ typedef struct block {
 //uint64_t out[7];
 
 block_t out[8];
+cuint128_t out128[8];
 
 
 uint8_t aes_input0[128] = {
@@ -328,6 +330,163 @@ void sbox_bitsliced(block_t in[8]) {
     in[6].high = ~S6;
     in[7].high = ~S7;
 }
+void sbox_bitsliced128(cuint128_t in[8]) {
+    cuint128_t U0, U1, U2, U3, U4, U5, U6, U7;
+    cuint128_t T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23, T24, T25, T26, T27;
+    cuint128_t M1, M2, M3, M4, M5, M6, M7, M8, M9, M10, M11, M12, M13, M14, M15, M16, M17, M18, M19, M20, M21, M22, M23, M24, M25, M26, M27, M28, M29, M30, M31, M32, M33, M34, M35, M36, M37, M38, M39, M40, M41, M42, M43, M44, M45, M46, M47, M48, M49, M50, M51, M52, M53, M54, M55, M56, M57, M58, M59, M60, M61, M62, M63;
+    cuint128_t L0, L1, L2, L3, L4, L5, L6, L7, L8, L9, L10, L11, L12, L13, L14, L15, L16, L17, L18, L19, L20, L21, L22, L23, L24, L25, L26, L27, L28, L29;
+    cuint128_t S0, S1, S2, S3, S4, S5, S6, S7;
+
+    U0 = in[0];
+    U1 = in[1];
+    U2 = in[2];
+    U3 = in[3];
+    U4 = in[4];
+    U5 = in[5];
+    U6 = in[6];
+    U7 = in[7];
+
+    XOR(T1, U0, U3);
+    XOR(T2, U0, U5);
+    XOR(T3, U0, U6);
+    XOR(T4, U3, U5);
+    XOR(T5, U4, U6);
+    XOR(T6, T1, T5);
+    XOR(T7, U1, U2);
+    XOR(T8, U7, T6);
+    XOR(T9, U7, T7);
+    XOR(T10, T6, T7);
+    XOR(T11, U1, U5);
+    XOR(T12, U2, U5);
+    XOR(T13, T3, T4);
+    XOR(T14, T6, T11);
+    XOR(T15, T5, T11);
+    XOR(T16, T5, T12);
+    XOR(T17, T9, T16);
+    XOR(T18, U3, U7);
+    XOR(T19, T7, T18);
+    XOR(T20, T1, T19);
+    XOR(T21, U6, U7);
+    XOR(T22, T7, T21);
+    XOR(T23, T2, T22);
+    XOR(T24, T2, T10);
+    XOR(T25, T20, T17);
+    XOR(T26, T3, T16);
+    XOR(T27, T1, T12);
+
+    AND(M1, T13, T6);
+    AND(M2, T23, T8);
+    XOR(M3, T14, M1);
+    AND(M4, T19, U7);
+    XOR(M5, M4, M1);
+    AND(M6, T3, T16);
+    AND(M7, T22, T9);
+    XOR(M8, T26, M6);
+    AND(M9, T20, T17);
+    XOR(M10, M9, M6);
+    AND(M11, T1, T15);
+    AND(M12, T4, T27);
+    XOR(M13, M12, M11);
+    AND(M14, T2, T10);
+    XOR(M15, M14, M11);
+    XOR(M16, M3, M2);
+    XOR(M17, M5, T24);
+    XOR(M18, M8, M7);
+    XOR(M19, M10, M15);
+    XOR(M20, M16, M13);
+    XOR(M21, M17, M15);
+    XOR(M22, M18, M13);
+    XOR(M23, M19, T25);
+    XOR(M24, M22, M23);
+    AND(M25, M22, M20);
+    XOR(M26, M21, M25);
+    XOR(M27, M20, M21);
+    XOR(M28, M23, M25);
+    AND(M29, M28, M27);
+    AND(M30, M26, M24);
+    AND(M31, M20, M23);
+    AND(M32, M27, M31);
+    XOR(M33, M27, M25);
+    AND(M34, M21, M22);
+    AND(M35, M24, M34);
+    XOR(M36, M24, M25);
+    XOR(M37, M21, M29);
+    XOR(M38, M32, M33);
+    XOR(M39, M23, M30);
+    XOR(M40, M35, M36);
+    XOR(M41, M38, M40);
+    XOR(M42, M37, M39);
+    XOR(M43, M37, M38);
+    XOR(M44, M39, M40);
+    XOR(M45, M42, M41);
+    AND(M46, M44, T6);
+    AND(M47, M40, T8);
+    AND(M48, M39, U7);
+    AND(M49, M43, T16);
+    AND(M50, M38, T9);
+    AND(M51, M37, T17);
+    AND(M52, M42, T15);
+    AND(M53, M45, T27);
+    AND(M54, M41, T10);
+    AND(M55, M44, T13);
+    AND(M56, M40, T23);
+    AND(M57, M39, T19);
+    AND(M58, M43, T3);
+    AND(M59, M38, T22);
+    AND(M60, M37, T20);
+    AND(M61, M42, T1);
+    AND(M62, M45, T4);
+    AND(M63, M41, T2);
+
+    XOR(L0, M61, M62);
+    XOR(L1, M50, M56);
+    XOR(L2, M46, M48);
+    XOR(L3, M47, M55);
+    XOR(L4, M54, M58);
+    XOR(L5, M49, M61);
+    XOR(L6, M62, L5);
+    XOR(L7, M46, L3);
+    XOR(L8, M51, M59);
+    XOR(L9, M52, M53);
+    XOR(L10, M53, L4);
+    XOR(L11, M60, L2);
+    XOR(L12, M48, M51);
+    XOR(L13, M50, L0);
+    XOR(L14, M52, M61);
+    XOR(L15, M55, L1);
+    XOR(L16, M56, L0);
+    XOR(L17, M57, L1);
+    XOR(L18, M58, L8);
+    XOR(L19, M63, L4);
+    XOR(L20, L0, L1);
+    XOR(L21, L1, L7);
+    XOR(L22, L3, L12);
+    XOR(L23, L18, L2);
+    XOR(L24, L15, L9);
+    XOR(L25, L6, L10);
+    XOR(L26, L7, L9);
+    XOR(L27, L8, L10);
+    XOR(L28, L11, L14);
+    XOR(L29, L11, L17);
+
+    XOR(S0, L6, L24);
+    XOR(S1, L16, L26);
+    XOR(S2, L19, L28);
+    XOR(S3, L6, L21);
+    XOR(S4, L20, L22);
+    XOR(S5, L25, L29);
+    XOR(S6, L13, L27);
+    XOR(S7, L6, L23);
+
+    in[0] = S0;
+    in[1] = ~S1;
+    in[2] = ~S2;
+    in[3] = S3;
+    in[4] = S4;
+    in[5] = S5;
+    in[6] = ~S6;
+    in[7] = ~S7;
+}
 
 
 
@@ -343,9 +502,28 @@ int main()
     for (int i = 0; i < 8; i++) {
         load_64(aes_input0+(16*i), out+i);
     }
+    
+    cuint128_t u128{ out->high,out->low };
+
+    u128 = u128 << 32;
 
     bit_tranformation(out);
+    for (int i = 0; i < 8; i++) {
+        out128[i].hi = out[i].high,
+        out128[i].lo = out[i].low;
+    }
+
     sbox_bitsliced(out);
+    sbox_bitsliced128(out128);
+
+    uint64_t a = 0x0011223344556677;
+    uint64_t b = 0x8899AABBCCDDEEFF;
+
+    //cuint128_t u128{out->high,out->low};
+    cuint128_t u128c{ 0x0011223344556677, 0x8899AABBCCDDEEFF };
+    cuint128_t u64{a};
+    cuint128_t u{};
+
 
 
 
