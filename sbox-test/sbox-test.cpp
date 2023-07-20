@@ -5,7 +5,7 @@
 #include "aes.h"
 #include "internal-aes.h"
 #include "cuint128_t.h"
-//#include "key_expansion.h"
+#include "key_expansion.h"
 
 typedef struct block {
     uint64_t high;
@@ -19,38 +19,38 @@ cuint128_t out128[8];
 
 
 uint8_t aes_input0[128] = {
-    0x32, 0x88, 0x31, 0xE0,
-    0x43, 0x5A, 0x31, 0x37,
-    0xF6, 0x30, 0x98, 0x07,
-    0xA8, 0x8D, 0xA2, 0x34,
-    0x32, 0x88, 0x31, 0xE0,
-    0x43, 0x5A, 0x31, 0x37,
-    0xF6, 0x30, 0x98, 0x07,
-    0xA8, 0x8D, 0xA2, 0x34,
-    0x32, 0x88, 0x31, 0xE0,
-    0x43, 0x5A, 0x31, 0x37,
-    0xF6, 0x30, 0x98, 0x07,
-    0xA8, 0x8D, 0xA2, 0x34,
-    0x32, 0x88, 0x31, 0xE0,
-    0x43, 0x5A, 0x31, 0x37,
-    0xF6, 0x30, 0x98, 0x07,
-    0xA8, 0x8D, 0xA2, 0x34,
-    0x32, 0x88, 0x31, 0xE0,
-    0x43, 0x5A, 0x31, 0x37,
-    0xF6, 0x30, 0x98, 0x07,
-    0xA8, 0x8D, 0xA2, 0x34,
-    0x32, 0x88, 0x31, 0xE0,
-    0x43, 0x5A, 0x31, 0x37,
-    0xF6, 0x30, 0x98, 0x07,
-    0xA8, 0x8D, 0xA2, 0x34,
-    0x32, 0x88, 0x31, 0xE0,
-    0x43, 0x5A, 0x31, 0x37,
-    0xF6, 0x30, 0x98, 0x07,
-    0xA8, 0x8D, 0xA2, 0x34,
-    0x32, 0x88, 0x31, 0xE0,
-    0x43, 0x5A, 0x31, 0x37,
-    0xF6, 0x30, 0x98, 0x07,
-    0xA8, 0x8D, 0xA2, 0x34,
+    0x32, 0x43, 0xf6, 0xa8,
+    0x88, 0x5a, 0x30, 0x8d,
+    0x31, 0x31, 0x98, 0xa2,
+    0xe0, 0x37, 0x07, 0x34,
+    0x32, 0x43, 0xf6, 0xa8,
+    0x88, 0x5a, 0x30, 0x8d,
+    0x31, 0x31, 0x98, 0xa2,
+    0xe0, 0x37, 0x07, 0x34,
+    0x32, 0x43, 0xf6, 0xa8,
+    0x88, 0x5a, 0x30, 0x8d,
+    0x31, 0x31, 0x98, 0xa2,
+    0xe0, 0x37, 0x07, 0x34,
+    0x32, 0x43, 0xf6, 0xa8,
+    0x88, 0x5a, 0x30, 0x8d,
+    0x31, 0x31, 0x98, 0xa2,
+    0xe0, 0x37, 0x07, 0x34,
+    0x32, 0x43, 0xf6, 0xa8,
+    0x88, 0x5a, 0x30, 0x8d,
+    0x31, 0x31, 0x98, 0xa2,
+    0xe0, 0x37, 0x07, 0x34,
+    0x32, 0x43, 0xf6, 0xa8,
+    0x88, 0x5a, 0x30, 0x8d,
+    0x31, 0x31, 0x98, 0xa2,
+    0xe0, 0x37, 0x07, 0x34,
+    0x32, 0x43, 0xf6, 0xa8,
+    0x88, 0x5a, 0x30, 0x8d,
+    0x31, 0x31, 0x98, 0xa2,
+    0xe0, 0x37, 0x07, 0x34,
+    0x32, 0x43, 0xf6, 0xa8,
+    0x88, 0x5a, 0x30, 0x8d,
+    0x31, 0x31, 0x98, 0xa2,
+    0xe0, 0x37, 0x07, 0x34,
 };
 uint8_t aes_input1[16] = {
     0x32, 0x88, 0x31, 0xE0,
@@ -59,11 +59,12 @@ uint8_t aes_input1[16] = {
     0xA8, 0x8D, 0xA2, 0x34
 };
 uint8_t aes_input2[16] = {
-    0x32, 0x88, 0x31, 0xE0,
-    0x43, 0x5A, 0x31, 0x37,
-    0xF6, 0x30, 0x98, 0x07,
-    0xA8, 0x8D, 0xA2, 0x34
+    0x32, 0x43, 0xf6, 0xa8,
+    0x88, 0x5a, 0x30, 0x8d,
+    0x31, 0x31, 0x98, 0xa2,
+    0xe0, 0x37, 0x07, 0x34
 };
+
 //uint8_t aes_input3[16] = {
 //    0x32, 0x88, 0x31, 0xE0,
 //    0x43, 0x5A, 0x31, 0x37,
@@ -102,6 +103,8 @@ uint8_t aes_key[16] = {
     0x09, 0xCF, 0x4F, 0x3C
 };
 
+
+
 uint8_t aes_key0[16] = { 0 };
 
 #define HI32(X) ((X & 0xFFFF0000) >> 32)
@@ -132,31 +135,68 @@ __inline void swapmove_(T& a, T& b, int n, T mask) {
     b ^= (tmp << n);
 }
 
-void bit_tranformation(block128_t* block) {
-    swapmove_(block[0].high, block[1].high, 1, (uint64_t)0x5555555555555555); 
-    swapmove_(block[0].low, block[1].low, 1, (uint64_t)0x5555555555555555);
-    swapmove_(block[2].high, block[3].high, 1, (uint64_t)0x5555555555555555);
-    swapmove_(block[2].low, block[3].low, 1, (uint64_t)0x5555555555555555);
-    swapmove_(block[4].high, block[5].high, 1, (uint64_t)0x5555555555555555);
-    swapmove_(block[4].low, block[5].low, 1, (uint64_t)0x5555555555555555);
-    swapmove_(block[6].high, block[7].high, 1, (uint64_t)0x5555555555555555);
-    swapmove_(block[6].low, block[7].low, 1, (uint64_t)0x5555555555555555);
-    swapmove_(block[0].high, block[2].high, 2, (uint64_t)0x3333333333333333);
-    swapmove_(block[0].low, block[2].low, 2, (uint64_t)0x3333333333333333);
-    swapmove_(block[1].high, block[3].high, 2, (uint64_t)0x3333333333333333);
-    swapmove_(block[1].low, block[3].low, 2, (uint64_t)0x3333333333333333);
-    swapmove_(block[4].high, block[6].high, 2, (uint64_t)0x3333333333333333);
-    swapmove_(block[4].low, block[6].low, 2, (uint64_t)0x3333333333333333);
-    swapmove_(block[5].high, block[7].high, 2, (uint64_t)0x3333333333333333);
-    swapmove_(block[5].low, block[7].low, 2, (uint64_t)0x3333333333333333);
-    swapmove_(block[0].high, block[4].high, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
-    swapmove_(block[0].low, block[4].low, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
-    swapmove_(block[1].high, block[5].high, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
-    swapmove_(block[1].low, block[5].low, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
-    swapmove_(block[2].high, block[6].high, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
-    swapmove_(block[2].low, block[6].low, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
-    swapmove_(block[3].high, block[7].high, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
-    swapmove_(block[3].low, block[7].low, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
+void bit_tranformation(cuint128_t* block) {
+    swapmove_(block[0].hi, block[1].hi, 1, (uint64_t)0x5555555555555555); 
+    swapmove_(block[0].lo, block[1].lo, 1, (uint64_t)0x5555555555555555);
+    swapmove_(block[2].hi, block[3].hi, 1, (uint64_t)0x5555555555555555);
+    swapmove_(block[2].lo, block[3].lo, 1, (uint64_t)0x5555555555555555);
+    swapmove_(block[4].hi, block[5].hi, 1, (uint64_t)0x5555555555555555);
+    swapmove_(block[4].lo, block[5].lo, 1, (uint64_t)0x5555555555555555);
+    swapmove_(block[6].hi, block[7].hi, 1, (uint64_t)0x5555555555555555);
+    swapmove_(block[6].lo, block[7].lo, 1, (uint64_t)0x5555555555555555);
+    swapmove_(block[0].hi, block[2].hi, 2, (uint64_t)0x3333333333333333);
+    swapmove_(block[0].lo, block[2].lo, 2, (uint64_t)0x3333333333333333);
+    swapmove_(block[1].hi, block[3].hi, 2, (uint64_t)0x3333333333333333);
+    swapmove_(block[1].lo, block[3].lo, 2, (uint64_t)0x3333333333333333);
+    swapmove_(block[4].hi, block[6].hi, 2, (uint64_t)0x3333333333333333);
+    swapmove_(block[4].lo, block[6].lo, 2, (uint64_t)0x3333333333333333);
+    swapmove_(block[5].hi, block[7].hi, 2, (uint64_t)0x3333333333333333);
+    swapmove_(block[5].lo, block[7].lo, 2, (uint64_t)0x3333333333333333);
+    swapmove_(block[0].hi, block[4].hi, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
+    swapmove_(block[0].lo, block[4].lo, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
+    swapmove_(block[1].hi, block[5].hi, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
+    swapmove_(block[1].lo, block[5].lo, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
+    swapmove_(block[2].hi, block[6].hi, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
+    swapmove_(block[2].lo, block[6].lo, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
+    swapmove_(block[3].hi, block[7].hi, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
+    swapmove_(block[3].lo, block[7].lo, 4, (uint64_t)0x0f0f0f0f0f0f0f0f);
+}
+
+void bitslice_key(unsigned char exkey[176], unsigned char slicedkey[11][8][16]) {
+    for (int i = 0; i < 176; i++) {
+        if ((exkey[i] & 0x80) != 0)
+            slicedkey[i / 16][0][(i % 16)] = 0xff;
+        else
+            slicedkey[i / 16][0][(i % 16)] = 0x00;
+        if ((exkey[i] & 0x40) != 0)
+            slicedkey[i / 16][1][(i % 16)] = 0xff;
+        else
+            slicedkey[i / 16][1][(i % 16)] = 0x00;
+        if ((exkey[i] & 0x20) != 0)
+            slicedkey[i / 16][2][(i % 16)] = 0xff;
+        else
+            slicedkey[i / 16][2][(i % 16)] = 0x00;
+        if ((exkey[i] & 0x10) != 0)
+            slicedkey[i / 16][3][(i % 16)] = 0xff;
+        else
+            slicedkey[i / 16][3][(i % 16)] = 0x00;
+        if ((exkey[i] & 0x08) != 0)
+            slicedkey[i / 16][4][(i % 16)] = 0xff;
+        else
+            slicedkey[i / 16][4][(i % 16)] = 0x00;
+        if ((exkey[i] & 0x04) != 0)
+            slicedkey[i / 16][5][(i % 16)] = 0xff;
+        else
+            slicedkey[i / 16][5][(i % 16)] = 0x00;
+        if ((exkey[i] & 0x02) != 0)
+            slicedkey[i / 16][6][(i % 16)] = 0xff;
+        else
+            slicedkey[i / 16][6][(i % 16)] = 0x00;
+        if ((exkey[i] & 0x01) != 0)
+            slicedkey[i / 16][7][(i % 16)] = 0xff;
+        else
+            slicedkey[i / 16][7][(i % 16)] = 0x00;
+    }
 }
 
 
@@ -489,6 +529,12 @@ void sbox_bitsliced128(T in[8]) {
     in[7] = ~S7;
 }
 
+void addRoundKey(cuint128_t*  a, cuint128_t* key) {
+    for (int i = 0; i < 8; i++) {
+        a[i] ^= key[i];
+    }
+}
+
 
 
 //void mixCol();
@@ -496,6 +542,20 @@ void sbox_bitsliced128(T in[8]) {
 
 int main()
 {
+    //Read key
+    key_t key;
+    word* expandedkeys = (word*)malloc(sizeof(word) * (Nb * (Nr + 1)));
+    unsigned char slicedkey[11][8][16];
+
+    for (BYTE i = 0; i < 16; i++) {
+        key.state->byte[i] = aes_key[i];
+        //int ret = fscanf(pKeyFile, "%hhx", &key->state->byte[i]); //Read the private key in -  fscanf reads files and saves space sperated hex values to a local memory
+    }
+
+    key_expansion(&key, (key_t*)expandedkeys);
+
+    bitslice_key((BYTE*)expandedkeys, slicedkey);
+
     
     
     //swapmove_(out->high, aes_input1+1,0x11,2);
@@ -511,11 +571,18 @@ int main()
 
     u128 = u128 << 32;
 
-    bit_tranformation(out);
+    
+    bit_tranformation(out128);
+
     for (int i = 0; i < 8; i++) {
         out128[i].hi = out[i].high,
         out128[i].lo = out[i].low;
     }
+
+
+    // ADD round key
+    addRoundKey(out128, (cuint128_t *) slicedkey);
+
 
     //sbox_bitsliced(out);
     sbox_bitsliced128(out128);

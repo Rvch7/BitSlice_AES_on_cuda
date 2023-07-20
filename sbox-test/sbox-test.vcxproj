@@ -135,7 +135,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aes.h" />
-    <ClInclude Include="AES128_main.h" />
     <ClInclude Include="cuint128_t.h" />
     <ClInclude Include="internal-aes.h" />
     <ClInclude Include="key_expansion.h" />

@@ -42,6 +42,12 @@ public:
 		return out;
 	}
 
+	cuint128_t& operator^=(const cuint128_t rhs) {
+		this->hi ^= rhs.hi;
+		this->lo ^= rhs.lo;
+		return *this;
+	}
+
 	cuint128_t& operator&(const cuint128_t rhs) {
 		cuint128_t out;
 		out.hi = this->hi & rhs.hi;

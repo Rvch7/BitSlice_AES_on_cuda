@@ -44,8 +44,5 @@
     <ClInclude Include="key_expansion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AES128_main.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
